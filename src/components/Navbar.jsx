@@ -63,64 +63,82 @@ const NavBar = () => {
   }, [isNavVisible]);
 
   return (
-    <div
-      ref={navContainerRef}
-      className="fixed inset-x-0 top-4 z-50 h-16 border-none transition-all duration-700 sm:inset-x-6"
-    >
-      <header className="absolute top-1/2 w-full -translate-y-1/2">
-        <nav className="flex size-full items-center justify-between p-4">
-          {/* Logo and Product button */}
-          <div className="flex items-center gap-7">
-            <img src="/img/logo.png" alt="logo" className="w-10" />
+    <>
+      {/* Desktop Navigation */}
+      <div
+        ref={navContainerRef}
+        className="fixed inset-x-0 top-4 z-50 h-16 border-none transition-all duration-700 sm:inset-x-6 hidden md:block"
+      >
+        <header className="absolute top-1/2 w-full -translate-y-1/2">
+          <nav className="flex size-full items-center justify-between p-4">
+            {/* Logo and Product button */}
+            <div className="flex items-center gap-7">
+              <img src="/img/logo.png" alt="logo" className="w-10" />
 
-            <Button
-              id="product-button"
-              title="Products"
-              rightIcon={<TiLocationArrow />}
-              containerClass="bg-blue-50 md:flex hidden items-center justify-center gap-1"
-            />
-          </div>
-
-          {/* Navigation Links and Audio Button */}
-          <div className="flex h-full items-center">
-            <div className="hidden md:block">
-              {navItems.map((item, index) => (
-                <a
-                  key={index}
-                  href={`#${item.toLowerCase()}`}
-                  className="nav-hover-btn"
-                >
-                  {item}
-                </a>
-              ))}
+              <Button
+                id="product-button"
+                title="Products"
+                rightIcon={<TiLocationArrow />}
+                containerClass="bg-blue-50 md:flex hidden items-center justify-center gap-1"
+              />
             </div>
 
-            <button
-              onClick={toggleAudioIndicator}
-              className="ml-10 flex items-center space-x-0.5"
-            >
-              <audio
-                ref={audioElementRef}
-                className="hidden"
-                src="/audio/loop.mp3"
-                loop
-              />
-              {[1, 2, 3, 4].map((bar) => (
-                <div
-                  key={bar}
-                  className={clsx("indicator-line", {
-                    active: isIndicatorActive,
-                  })}
-                  style={{
-                    animationDelay: `${bar * 0.1}s`,
-                  }}
+            {/* Navigation Links and Audio Button */}
+            <div className="flex h-full items-center">
+              <div className="hidden md:block">
+                {navItems.map((item, index) => (
+                  <a
+                    key={index}
+                    href={`#${item.toLowerCase()}`}
+                    className="nav-hover-btn"
+                  >
+                    {item}
+                  </a>
+                ))}
+              </div>
+
+              <button
+                onClick={toggleAudioIndicator}
+                className="ml-10 flex items-center space-x-0.5"
+              >
+                <audio
+                  ref={audioElementRef}
+                  className="hidden"
+                  src="/audio/loop.mp3"
+                  loop
                 />
-              ))}
-            </button>
-          </div>
+                {[1, 2, 3, 4].map((bar) => (
+                  <div
+                    key={bar}
+                    className={clsx("indicator-line", {
+                      active: isIndicatorActive,
+                    })}
+                    style={{
+                      animationDelay: `${bar * 0.1}s`,
+                    }}
+                  />
+                ))}
+              </button>
+            </div>
+          </nav>
+        </header>
+      </div>
+
+      {/* Mobile Navigation */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-black md:hidden">
+        <nav className="flex items-center justify-around p-4">
+          {navItems.map((item, index) => (
+            <a
+              key={index}
+              href={`#${item.toLowerCase()}`}
+              className="text-blue-50 text-sm uppercase"
+            >
+              {item}
+            </a>
+          ))}
         </nav>
-      </header>
-    </div>
+      </div>
+    </>
   );
 };
 

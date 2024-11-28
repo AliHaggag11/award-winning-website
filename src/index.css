@@ -69,7 +69,7 @@ body {
   }
 
   .hero-heading {
-    @apply uppercase font-zentry font-black text-5xl sm:right-10 sm:text-7xl md:text-9xl lg:text-[12rem];
+    @apply text-3xl sm:text-5xl md:text-7xl lg:text-[12rem] uppercase font-zentry font-black;
   }
 
   .about-subtext {
@@ -77,7 +77,7 @@ body {
   }
 
   .about-image {
-    @apply absolute left-1/2 top-0 z-20 h-[60vh] w-96 origin-center -translate-x-1/2 overflow-hidden rounded-3xl md:w-[30vw];
+    @apply absolute left-1/2 top-0 z-20 h-[40vh] w-[80vw] md:h-[60vh] md:w-96 origin-center -translate-x-1/2 overflow-hidden rounded-3xl;
   }
 
   .animated-title {
@@ -104,7 +104,7 @@ body {
   }
 
   .story-img-container {
-    @apply relative md:h-dvh h-[90vh] w-full;
+    @apply relative h-[50vh] md:h-dvh w-full;
     filter: url("#flt_tag");
   }
 
@@ -140,6 +140,14 @@ body {
 
   .contact-clip-path-2 {
     clip-path: polygon(29% 15%, 85% 30%, 50% 100%, 10% 64%);
+  }
+
+  .responsive-container {
+    @apply px-4 md:px-8 lg:px-16;
+  }
+
+  .mobile-nav {
+    @apply fixed bottom-0 left-0 right-0 bg-black py-4 md:relative md:py-0;
   }
 }
 
@@ -269,5 +277,23 @@ body {
   50% {
     transform: translateY(66%) scale(0.65);
     opacity: 0.8;
+  }
+}
+
+/* Add mobile-first media queries */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  .animated-title {
+    font-size: 2rem;
+    padding: 0 1rem;
+  }
+
+  .bento-tilt_1,
+  .bento-tilt_2 {
+    width: 100%;
+    margin: 0;
   }
 }
