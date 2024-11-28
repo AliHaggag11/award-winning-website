@@ -18,21 +18,48 @@ const Hero = () => {
 
   const totalVideos = 4;
   const nextVdRef = useRef(null);
+  const mainVideoRef = useRef(null);
 
   const handleVideoLoad = () => {
     setLoadedVideos((prev) => prev + 1);
   };
 
-  // Preload videos
+  // Handle mobile video autoplay
+  useEffect(() => {
+    const playVideos = async () => {
+      try {
+        if (mainVideoRef.current) {
+          // Set video to low quality for mobile
+          mainVideoRef.current.playbackQuality = 'low';
+          // Ensure video is muted for autoplay
+          mainVideoRef.current.muted = true;
+          // Try to play the video
+          await mainVideoRef.current.play();
+        }
+      } catch (error) {
+        console.error('Video autoplay failed:', error);
+      }
+    };
+
+    playVideos();
+  }, []);
+
+  // Modified video preloading for mobile
   useEffect(() => {
     const preloadVideos = async () => {
       try {
-        const videoPromises = Array.from({ length: totalVideos }, (_, i) => {
+        // Only preload the first video on mobile
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        const videosToLoad = isMobile ? 1 : totalVideos;
+
+        const videoPromises = Array.from({ length: videosToLoad }, (_, i) => {
           return new Promise((resolve, reject) => {
             const video = document.createElement('video');
             video.src = getVideoSrc(i + 1);
-            video.preload = 'auto';
-            video.onloadeddata = () => resolve();
+            video.preload = 'metadata'; // Only load metadata on mobile
+            video.playsInline = true;
+            video.muted = true;
+            video.onloadedmetadata = () => resolve();
             video.onerror = () => reject();
           });
         });
@@ -131,6 +158,7 @@ const Hero = () => {
                   loop
                   muted
                   playsInline
+                  preload="metadata"
                   id="current-video"
                   className="size-64 origin-center scale-150 object-cover object-center"
                   onLoadedData={handleVideoLoad}
@@ -144,17 +172,20 @@ const Hero = () => {
             loop
             muted
             playsInline
+            preload="metadata"
             id="next-video"
             className="absolute-center invisible absolute z-20 size-64 object-cover object-center"
             onLoadedData={handleVideoLoad}
           />
           
           <video
+            ref={mainVideoRef}
             src={getVideoSrc(currentIndex === totalVideos - 1 ? 1 : currentIndex)}
             autoPlay
             loop
             muted
             playsInline
+            preload="metadata"
             className="absolute left-0 top-0 size-full object-cover object-center"
             onLoadedData={handleVideoLoad}
           />
